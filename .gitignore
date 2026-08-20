@@ -1,0 +1,22 @@
+# Зависимости
+**/node_modules
+
+# Данные пользователей и секреты — создаются автоматически при первом запуске.
+# Никогда не попадают в репозиторий: db.json содержит аккаунты (хэши паролей,
+# kdfSalt, обёрнутые мастер-ключи), storage/ — зашифрованные файлы,
+# .jwt-secret — секрет подписи JWT.
+server/db.json
+server/db.json.tmp
+server/.jwt-secret
+server/storage/*
+!server/storage/.gitkeep
+
+# Локальное окружение
+.env
+.env.*
+
+# Прочее
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

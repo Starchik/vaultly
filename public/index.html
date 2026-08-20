@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Vaultly — вход</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0b0e14" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Vaultly" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/favicon-32.png" />
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="brand">
+      <div class="brand-logo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></svg></div>
+      <div class="brand-name">Vault<span>ly</span></div>
+    </div>
+
+    <div id="loginForm">
+      <div class="field">
+        <label>Логин</label>
+        <input id="loginUser" type="text" autocomplete="username webauthn" />
+      </div>
+      <div class="field">
+        <label>Пароль</label>
+        <input id="loginPass" type="password" autocomplete="current-password" />
+      </div>
+      <div class="error-msg" id="loginError"></div>
+      <button class="btn btn-primary" id="loginBtn">Войти</button>
+      <button class="btn btn-ghost" id="bioLoginBtn" style="width:100%;margin-top:8px;display:none">
+        <span id="icBio"></span> Войти по биометрии
+      </button>
+      <div class="auth-switch">Нет аккаунта? <a href="#" id="showRegister">Зарегистрироваться</a></div>
+    </div>
+
+    <div id="registerForm" style="display:none">
+      <div class="field">
+        <label>Логин</label>
+        <input id="regUser" type="text" autocomplete="username" />
+      </div>
+      <div class="field">
+        <label>Пароль (минимум 6 символов)</label>
+        <input id="regPass" type="password" autocomplete="new-password" />
+      </div>
+      <div class="error-msg" id="regError"></div>
+      <button class="btn btn-primary" id="regBtn">Создать аккаунт</button>
+      <div class="auth-switch">Уже есть аккаунт? <a href="#" id="showLogin">Войти</a></div>
+    </div>
+
+    <div class="hint">
+      Файлы шифруются в вашем браузере (AES-256-GCM) до отправки на сервер —
+      сервер хранит только зашифрованные данные и не знает ваш ключ.
+      Ключ шифрования выводится из пароля, поэтому <b>восстановить пароль
+      невозможно</b> — это плата за настоящее end-to-end шифрование.
+      Вход по биометрии включается после первого входа паролем — в разделе
+      «Биометрия» в боковой панели. Дальше он не требует ни пароля, ни логина:
+      нажмите «Войти по биометрии» или выберите ключ доступа в поле логина.
+    </div>
+  </div>
+</div>
+
+<script src="js/icons.js"></script>
+<script>document.getElementById('icBio').innerHTML = icon('fingerprint', 'icon-sm');</script>
+<script src="js/webauthn-browser.js"></script>
+<script src="js/crypto.js"></script>
+<script src="js/api.js"></script>
+<script src="js/webauthn.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

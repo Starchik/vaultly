@@ -1,0 +1,10 @@
+**/node_modules
+server/db.json
+server/db.json.tmp
+server/.jwt-secret
+server/storage/*
+!server/storage/.gitkeep
+.git
+.gitignore
+*.log
+.DS_Store

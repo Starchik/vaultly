@@ -1,0 +1,21 @@
+{
+  "name": "vaultly-server",
+  "version": "1.0.0",
+  "description": "Vaultly — приватный файлообменник с клиентским (end-to-end) AES-GCM шифрованием. Сервер на Node.js/Express.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "@simplewebauthn/server": "^13.3.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.0",
+    "uuid": "^9.0.1"
+  }
+}

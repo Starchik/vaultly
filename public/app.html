@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Vaultly — Облачный диск</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0b0e14" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Vaultly" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/favicon-32.png" />
+</head>
+<body>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+<div class="app">
+  <div class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo" id="logoMark"></div>
+      <div class="brand-name">Vault<span>ly</span></div>
+      <button class="logout-btn" id="navLogout" title="Выйти"><span id="icLogout"></span></button>
+    </div>
+
+    <div class="upload-btn" id="uploadBtn"><span id="icUpload"></span> Загрузить</div>
+    <div class="drag-hint">или перетащите файлы в любое место экрана</div>
+    <input type="file" id="fileInput" multiple style="display:none" />
+
+    <div class="nav-item active" id="navDrive"><span class="nav-icon" id="icDrive"></span> Облачный диск</div>
+    <div class="nav-item" id="navRubbish"><span class="nav-icon" id="icRubbish"></span> Корзина</div>
+    <div class="nav-item" id="navBiometric"><span class="nav-icon" id="icBiometric"></span> Биометрия</div>
+
+    <div class="quota">
+      <div class="quota-text" id="quotaText">Загрузка…</div>
+      <div class="quota-bar"><div class="quota-fill" id="quotaFill" style="width:0%"></div></div>
+      <div class="quota-trash" id="quotaTrash" hidden></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="hamburger-btn" id="hamburgerBtn" title="Меню"><span id="icMenu"></span></button>
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <div class="search-box-wrap">
+        <span id="icSearch"></span>
+        <input class="search-box" id="searchBox" placeholder="Поиск в этой папке…" />
+      </div>
+      <div class="view-toggle">
+        <button id="viewGridBtn" class="active"><span id="icGrid"></span></button>
+        <button id="viewListBtn"><span id="icList"></span></button>
+      </div>
+      <button class="icon-btn" id="newFolderBtn"><span id="icFolderPlus"></span><span class="btn-label"> Папка</span></button>
+    </div>
+
+    <div class="drop-zone" id="dropZone">
+      <div id="content"></div>
+    </div>
+
+    <button class="fab-upload" id="fabUpload" title="Загрузить"><span id="icFabUpload"></span></button>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+<div class="toast-stack" id="toastStack"></div>
+<div id="uploadPanel"></div>
+
+<script src="js/icons.js"></script>
+<script>
+  document.getElementById('logoMark').innerHTML = icon('logo');
+  document.getElementById('icUpload').innerHTML = icon('upload');
+  document.getElementById('icDrive').innerHTML = icon('drive');
+  document.getElementById('icRubbish').innerHTML = icon('trash');
+  document.getElementById('icLogout').innerHTML = icon('logout');
+  document.getElementById('icSearch').innerHTML = icon('search');
+  document.getElementById('icGrid').innerHTML = icon('grid');
+  document.getElementById('icList').innerHTML = icon('list');
+  document.getElementById('icFolderPlus').innerHTML = icon('folderPlus');
+  document.getElementById('icBiometric').innerHTML = icon('fingerprint');
+  document.getElementById('icMenu').innerHTML = icon('menu');
+  document.getElementById('icFabUpload').innerHTML = icon('upload');
+</script>
+<script src="js/webauthn-browser.js"></script>
+<script src="js/crypto.js"></script>
+<script src="js/api.js"></script>
+<script src="js/webauthn.js"></script>
+<script src="js/preview.js"></script>
+<script src="js/zip.js"></script>
+<script src="js/app.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Vaultly — файл по ссылке</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="stylesheet" href="css/style.css" />
+<meta name="theme-color" content="#0b0e14" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/favicon-32.png" />
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card share-card">
+    <div class="brand">
+      <div class="brand-logo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></svg></div>
+      <div class="brand-name">Vault<span>ly</span></div>
+    </div>
+
+    <div id="stateLoading">Расшифровка ссылки…</div>
+
+    <div id="statePassword" style="display:none">
+      <div class="share-file">
+        <div class="thumb icon-xl" id="lockIcon"></div>
+        <div class="meta">
+          <div class="name">Ссылка защищена паролем</div>
+          <div class="size">Пароль знает только отправитель</div>
+        </div>
+      </div>
+      <input type="password" id="pwInput" placeholder="Пароль от ссылки" autocomplete="off" />
+      <button class="btn btn-primary" id="pwBtn"><span id="icUnlock"></span> Открыть</button>
+      <div class="error-msg" id="pwError" style="display:none"></div>
+    </div>
+
+    <div id="stateReady" style="display:none">
+      <div class="share-file">
+        <div class="thumb icon-xl" id="fileIcon"></div>
+        <div class="meta">
+          <div class="name" id="fileName"></div>
+          <div class="size" id="fileSize"></div>
+        </div>
+      </div>
+      <div class="share-stats" id="shareLimits"></div>
+      <button class="btn btn-primary" id="downloadBtn"><span id="icDownload"></span> Скачать</button>
+      <div class="progress-line" id="progLine" style="display:none"><div class="progress-fill" id="progFill"></div></div>
+    </div>
+
+    <div id="stateError" style="display:none">
+      <div class="error-msg" id="errText">Ссылка недействительна</div>
+    </div>
+
+    <div class="hint">
+      Файл расшифровывается прямо в вашем браузере. Ключ либо встроен в саму
+      ссылку и не передаётся на сервер, либо обёрнут паролем, которого сервер
+      не знает. В любом случае содержимое файла ему недоступно.
+    </div>
+  </div>
+</div>
+
+<script src="js/icons.js"></script>
+<script>
+  document.getElementById('icDownload').innerHTML = icon('download');
+  document.getElementById('icUnlock').innerHTML = icon('lock');
+  document.getElementById('lockIcon').innerHTML = icon('lock', 'icon-xl');
+</script>
+<script src="js/crypto.js"></script>
+<script src="js/api.js"></script>
+<script src="js/share.js"></script>
+</body>
+</html>
