@@ -134,10 +134,13 @@ async function showFile(publicId, meta, fileKey) {
     const progLine = document.getElementById('progLine');
     const progFill = document.getElementById('progFill');
     btn.disabled = true; btn.innerHTML = `${icon('download', 'icon-sm')} Скачивание…`;
-    progLine.style.display = 'block'; progFill.style.width = '30%';
+    progLine.style.display = 'block'; progFill.style.width = '0%';
     try {
-      const buf = await API.shareDownload(publicId, shareVerifier);
-      progFill.style.width = '70%';
+      // полоса идёт по фактически полученным байтам; остаток шкалы оставлен
+      // на расшифровку, она начинается только после полной загрузки
+      const buf = await API.shareDownload(publicId, shareVerifier, (ratio) => {
+        progFill.style.width = (ratio * 92).toFixed(1) + '%';
+      });
       const plain = await VLT.decryptBuffer(fileKey, VLT.b64.toBuf(meta.contentIv), buf);
       progFill.style.width = '100%';
       const blob = new Blob([plain], { type: attrs.type || 'application/octet-stream' });

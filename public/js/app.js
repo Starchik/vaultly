@@ -1002,7 +1002,13 @@ async function handleUpload(fileList) {
     const fill = row.querySelector('.progress-fill');
     const pctEl = row.querySelector('.fname span:last-child');
     try {
-      await uploadOne(file, (pct) => { fill.style.width = pct + '%'; pctEl.textContent = pct + '%'; });
+      // события прогресса сыпятся часто — перерисовываем только на смене процента
+      let shown = -1;
+      await uploadOne(file, (pct) => {
+        if (pct === shown) return;
+        shown = pct;
+        fill.style.width = pct + '%'; pctEl.textContent = pct + '%';
+      });
       fill.style.width = '100%'; pctEl.innerHTML = icon('check', 'icon-sm');
     } catch (e) {
       pctEl.textContent = 'Ошибка';
@@ -1014,15 +1020,21 @@ async function handleUpload(fileList) {
   load(); refreshQuota();
 }
 
+// Вехи полосы загрузки. Чтение и шифрование быстрые и от сети не зависят,
+// поэтому им отдано только начало шкалы; всё остальное — отправка, где прогресс
+// приходит от XHR по фактически ушедшим байтам. При отправке до 100% не
+// дотягиваем: последние проценты закрывает ответ сервера, иначе полоса
+// показывала бы «готово», пока сервер ещё принимает файл.
+const UP_READ = 4, UP_ENCRYPTED = 12, UP_SENT = 97;
+
 async function uploadOne(file, onProgress) {
   const fileKey = await VLT.generateFileKey();
   const buffer = await file.arrayBuffer();
-  onProgress(20);
+  onProgress(UP_READ);
   const { ciphertext, iv } = await VLT.encryptBuffer(fileKey, buffer);
-  onProgress(45);
   const { data: attrsEncrypted, iv: attrsIv } = await VLT.encryptJson(fileKey, { name: file.name, type: file.type });
   const { keyWrapped, keyWrapIv } = await VLT.wrapFileKey(masterKey, fileKey);
-  onProgress(60);
+  onProgress(UP_ENCRYPTED);
 
   const form = new FormData();
   form.append('blob', new Blob([ciphertext]), 'blob');
@@ -1034,7 +1046,9 @@ async function uploadOne(file, onProgress) {
   form.append('keyWrapped', keyWrapped);
   form.append('keyWrapIv', keyWrapIv);
 
-  await API.uploadFile(form);
+  await API.uploadFile(form, (ratio) => {
+    onProgress(UP_ENCRYPTED + Math.round(ratio * (UP_SENT - UP_ENCRYPTED)));
+  });
   onProgress(100);
 }
 
