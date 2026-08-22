@@ -2,9 +2,14 @@ version: '3.8'
 
 services:
   vaultly:
-    # Используем готовый собранный образ (нужно собрать и загрузить отдельно)
-    # ИЛИ собираем на месте из репо (если есть доступ к файлам)
-    image: vaultly:latest
+    # Собираем образ из Dockerfile в репозитории
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    
+    image: vaultly:synology
     container_name: vaultly
     restart: unless-stopped
     
@@ -16,11 +21,11 @@ services:
     environment:
       - PORT=9990
       - NODE_ENV=production
-      - DATA_DIR=/data
+      - DATA_DIR=/app/server/storage
     
-    # ТОЛЬКО volume для данных - БД, JWT-секрет, загруженные файлы
+    # ТОЛЬКО volume для постоянных данных
     volumes:
-      - vaultly_data:/data
+      - vaultly_data:/app/server/storage
     
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9990"]
