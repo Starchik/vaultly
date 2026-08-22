@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  vaultly:
+    image: node:20-alpine
+    container_name: vaultly
+    restart: unless-stopped
+    
+    # Портали и сеть
+    ports:
+      - "9990:9990"
+    networks:
+      - vaultly-network
+    
+    # Переменные окружения (подстраиваем под DSM)
+    environment:
+      - PORT=9990
+      - NODE_ENV=production
+    
+    # Монтирование волюма для сохранения данных
+    volumes:
+      - vaultly_data:/app/server/storage
+      - ./server:/app/server:ro
+      - ./public:/app/public:ro
+    
+    # Рабочая директория и команда запуска
+    working_dir: /app/server
+    command: >
+      sh -c "npm ci --omit=dev && node server.js"
+    
+    # Healthcheck (опционально, для мониторинга)
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9990"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  vaultly_data:
+    driver: local
+
+networks:
+  vaultly-network:
+    driver: bridge
