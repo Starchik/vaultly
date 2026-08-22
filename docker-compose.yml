@@ -2,7 +2,11 @@ version: '3.8'
 
 services:
   vaultly:
-    image: node:20-alpine
+    # Используем готовый образ вместо node:20-alpine
+    # чтобы не собирать его каждый раз
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: vaultly
     restart: unless-stopped
     
@@ -12,23 +16,17 @@ services:
     networks:
       - vaultly-network
     
-    # Переменные окружения (подстраиваем под DSM)
+    # Переменные окружения
     environment:
       - PORT=9990
       - NODE_ENV=production
+      - DATA_DIR=/app/server/storage
     
-    # Монтирование волюма для сохранения данных
+    # Монтирование волюма ДЛЯ ДАННЫХ (не код)
     volumes:
       - vaultly_data:/app/server/storage
-      - ./server:/app/server:ro
-      - ./public:/app/public:ro
     
-    # Рабочая директория и команда запуска
-    working_dir: /app/server
-    command: >
-      sh -c "npm ci --omit=dev && node server.js"
-    
-    # Healthcheck (опционально, для мониторинга)
+    # Healthcheck для мониторинга
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9990"]
       interval: 30s
